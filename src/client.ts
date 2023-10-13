@@ -3,12 +3,11 @@ import { Manager } from '@lomray/react-mobx-manager';
 import MobxLocalStorage from '@lomray/react-mobx-manager/storages/local-storage';
 import entryClient from '@lomray/vite-ssr-boost/browser/entry';
 import getServerState from '@lomray/vite-ssr-boost/helpers/get-server-state';
-import _ from 'lodash';
-import { spy } from 'mobx';
 import { IS_PROD } from '@constants/index';
 import StateKey from '@constants/state-key';
 import routes from '@routes/index';
 import App from './app.tsx';
+import CommandHandler from './command-handler';
 
 const initState = getServerState(StateKey.storeManager, IS_PROD);
 const metaState = getServerState(StateKey.metaManager, IS_PROD);
@@ -19,21 +18,7 @@ const storeManager = new Manager({
   storage: new MobxLocalStorage(),
 });
 
-const connectDevExtension = (manager: Manager) => {
-  spy((event) => {
-    if (['report-end', 'reaction'].includes(event.type)) {
-      return;
-    }
-
-    console.log('event:', event);
-
-    manager?.['__devOnChange']?.({ event: _.cloneDeep(event) });
-  });
-
-  return manager;
-};
-
-window['__MOBX_STORE_MANAGER__'] = connectDevExtension(storeManager);
+window['__MOBX_STORE_MANAGER__'] = new CommandHandler(storeManager).connectDevExtension();
 
 /**
  * Configure client
