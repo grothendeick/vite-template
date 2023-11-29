@@ -1,3 +1,5 @@
+import namespaces from '@assets/locales/namespaces';
+
 export const IS_SERVER = import.meta.env.SSR;
 
 export const IS_CLIENT = typeof window !== 'undefined';
@@ -8,3 +10,7 @@ export const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
 
 // will be replaced in github workflows
 export const APP_VERSION = 'APP_VERSION';
+
+export const APP_LANGUAGE = 'en'; // default app language
+
+export const APP_LANGUAGES = Object.keys(namespaces);
