@@ -3,6 +3,7 @@ import AppLayout from '@components/layouts/app';
 import NotFound from '@pages/not-found';
 import RouteManager from '@services/route-manager';
 import DetailsRoutes from './details';
+import Home from '@pages/home';
 
 /**
  * Application routes
@@ -14,7 +15,7 @@ const routes: TRouteObject[] = [
     children: [
       {
         index: true,
-        lazy: () => import('@pages/home'),
+        Component: Home,
       },
       {
         path: RouteManager.path('details'),
